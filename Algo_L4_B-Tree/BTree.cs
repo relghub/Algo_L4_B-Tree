@@ -75,16 +75,19 @@
                 // Ініціалізуємо мінімальне значення як великим числом
                 int minPositiveValue = int.MaxValue;
                 int minPathLength = int.MaxValue;
+                string treeTraverse = "";
 
                 // Виконуємо симетричний обхід дерева
-                FindMinPositive(root, 0, ref minPositiveValue, ref minPathLength);
+                FindMinPositive(root, 0, ref minPositiveValue, ref minPathLength, ref treeTraverse);
+                Console.WriteLine(($"Обхід дерева: {treeTraverse}"));
 
                 // Якщо мінімальний позитивний елемент не знайдено, повертаємо -1
                 return minPathLength == int.MaxValue ? -1 : minPathLength;
             }
 
             // Рекурсивний метод для симетричного обходу дерева і пошуку мінімального позитивного елемента
-            private void FindMinPositive(BTNode node, int currentPathLength, ref int minPositiveValue, ref int minPathLength)
+            private void FindMinPositive(BTNode node, int currentPathLength, ref int minPositiveValue, ref int minPathLength,
+                ref string traverseValue)
             {
                 if (node == null)
                 {
@@ -92,7 +95,7 @@
                 }
 
                 // Спочатку обходимо ліве піддерево
-                FindMinPositive(node.right, currentPathLength + 1, ref minPositiveValue, ref minPathLength);
+                FindMinPositive(node.left, currentPathLength + 1, ref minPositiveValue, ref minPathLength, ref traverseValue);
 
                 // Перевіряємо, чи є поточний елемент позитивним і мінімальним
                 if (node.item > 0 && node.item < minPositiveValue)
@@ -101,8 +104,10 @@
                     minPathLength = currentPathLength;
                 }
 
+                traverseValue += node.item;
+
                 // Далі обходимо праве піддерево
-                FindMinPositive(node.right, currentPathLength + 1, ref minPositiveValue, ref minPathLength);
+                FindMinPositive(node.right, currentPathLength + 1, ref minPositiveValue, ref minPathLength, ref traverseValue);
             }
 
         }
